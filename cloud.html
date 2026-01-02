@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="English">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Weather App</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(to right, #4ffec9, #00fe7b);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #fff;
+      margin: 0;
+    }
+
+    .weather-box {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      width: 300px;
+    }
+
+    input {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      width: 80%;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #fff;
+      border: none;
+      border-radius: 8px;
+      color: #333;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ddd;
+    }
+
+    .result {
+      margin-top: 15px;
+    }
+
+    .temp {
+      font-size: 2.5rem;
+      font-weight: bold;
+    }
+
+    .desc {
+      text-transform: capitalize;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+    <h1><CENTER><MARQUEE  SCROLLAMOUNT="10" color="red">WELCOME TO MY WHETHER WEBSITE</MARQUEE></CENTER></h1>
+    
+<MARQUEE  SCROLLAMOUNT="30" DIRECTION="RIGHT"><H2><B><I>You can type the location of any place in it and find out where it is.</H2></I></B></MARQUEE>
+
+<MARQUEE  SCROLLAMOUNT="5" DIRECTION="LEFT"><H2><B><I>YOU CAN TYPE THE LOCATION OF ANY PLACE IN IT AND FIND OUT WHERE IT IS</H2></I></B></MARQUEE><BR>
+</BR>
+  <h2>🌤 LIVE WHEATHE WEB</h2><BR>
+
+  <div class="weather-box">
+    <input type="text" id="city" placeholder="Enter city name..." />
+    <button onclick="getWeather()">Get Weather</button>
+
+    <div class="result" id="result">
+      <!-- Weather result will appear here -->
+    </div>
+  </div>
+
+  <script>
+    const apiKey = "212af47232b7b0a661ab0f929e08e817"; // 🔑 Replace with your OpenWeather API key
+
+    async function getWeather() {
+      const city = document.getElementById("city").value;
+      const result = document.getElementById("result");
+
+      if (!city) {
+        result.innerHTML = "<p>Please enter a city name 🌆</p>";
+        return;
+      }
+
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.cod === "404") {
+          result.innerHTML = `<p>❌ City not found!</p>`;
+          return;
+        }
+
+        result.innerHTML = `
+          <div class="temp">${data.main.temp}°C</div>
+          <div class="desc">${data.weather[0].description}</div>
+          <p>💧 Humidity: ${data.main.humidity}%</p>
+          <p>🌬 Wind: ${data.wind.speed} m/s</p>
+          <p>📍 ${data.name}, ${data.sys.country}</p>
+        `;
+      } catch (error) {
+        result.innerHTML = `<p>⚠️ Error fetching data</p>`;
+        console.error(error);
+      }
+    }
+  </script>
+
+
+<footer id="site-footer" aria-label="Site footer" style="border-top:1px solid #e3e3e3; padding:18px 16px; text-align:center; font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; font-size:14px; color:#444;">
+  <div style="max-width:980px; margin:0 auto; display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:12px;">
+    <div id="footer-name" style="font-weight:600;">
+      <!-- Replace 'Sahil' with your name if you want -->
+      SAHIL KUMAR (11248)
+    </div>
+    <div style="opacity:0.6;">|</div>
+    <div id="footer-launch" style="font-size:13px; opacity:0.85;">
+      Launch Date: <time id="launch-date" datetime=""></time>
+    </div>
+  </div>
+  <div style="margin-top:8px; font-size:12px; color:#666;">
+    © <span id="footer-year"></span> All rights reserved.
+  </div>
+</footer>
+
+<script>
+  // Set launch date to today's date in India locale (dd/mm/yyyy style)
+  (function() {
+    const now ="14 oct 2025"
+    // Format as "14 October 2025" in English (India). Change 'hi-IN' for Hindi month names if desired.
+    const formatted = now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+    const iso = now.toISOString().slice(0,10); // YYYY-MM-DD for datetime attribute
+    document.getElementById('24/102025').textContent = formatted;
+    document.getElementById('24/10/2025').setAttribute('datetime', iso);
+    document.getElementById('footer-year').textContent = now.getFullYear();
+  })();
+</script>
+</body>
+</html>
